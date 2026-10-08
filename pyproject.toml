@@ -22,7 +22,6 @@ classifiers = [
 ]
 dependencies = [
     "quantilica-core>=0.4.0",
-    "tqdm>=4.67.1",
 ]
 
 [project.urls]
