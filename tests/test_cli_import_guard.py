@@ -55,13 +55,13 @@ def test_import_cli_sem_plugin_nao_levanta_erro(_no_plugin) -> None:
 
 
 def test_main_sem_plugin_sai_1_e_orienta_install(_no_plugin, capsys) -> None:
-    """main([]) sai com SystemExit(1) e orienta 'quantilica install tesouro-direto'."""
+    """main([]) sai com SystemExit(1) e orienta 'quantilica install td'."""
     with pytest.raises(SystemExit) as exc_info:
         _no_plugin.main([])
     assert exc_info.value.code == 1
     stderr = capsys.readouterr().err
     assert "Erro: CLI requer 'typer' e 'rich' (via quantilica-cli)." in stderr
-    assert 'Instale via "quantilica install tesouro-direto".' in stderr
+    assert 'Instale via "quantilica install td".' in stderr
     assert "Detalhe:" in stderr
 
 

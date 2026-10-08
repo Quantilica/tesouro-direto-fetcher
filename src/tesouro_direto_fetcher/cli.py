@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import sys
 
-from quantilica.core.logging import configure_cli_logging
-
 _HOST_MODULES = {"typer", "rich", "quantilica"}
 
 try:
@@ -32,15 +30,12 @@ def main(argv: list[str] | None = None) -> None:
     if app is None:
         print(
             "Erro: CLI requer 'typer' e 'rich' (via quantilica-cli). "
-            'Instale via "quantilica install tesouro-direto". '
+            'Instale via "quantilica install td". '
             f"Detalhe: {_PLUGIN_ERROR}",
             file=sys.stderr,
         )
         raise SystemExit(1)
-    # We still configure basic cli logging, but the new UI setup in
-    # plugin will handle rich logging.
-    configure_cli_logging(verbose=False)
-
+    # O plugin configura o logging em todos os comandos via setup_rich_logging.
     # Typer apps usually read sys.argv by themselves if argv is not provided
     # However, if argv is provided (e.g. in tests), we need to handle it.
     if argv is None:
