@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## [Não lançado]
 
 ### Corrigido
+- `plugin.py`: a dica de instalação do extra `analysis` mandava `pip install tesouro-direto-fetcher[analysis]`, que não funciona para fetchers do Fluxo B (fora do PyPI), e o Rich engolia o `[analysis]` por tratá-lo como marcação, deixando só `pip install tesouro-direto-fetcher`. Agora a mensagem é `uv add 'tesouro-direto-fetcher[analysis]' --index https://index.quantilica.com/simple/`, forma que a norma `cli-fetchers` exige.
 - `cli.py`: mensagem do guard corrigida para `quantilica install td` (chave
   canônica do registro; `tesouro-direto` não resolve para a distribuição).
 

@@ -136,7 +136,8 @@ def _convert_dir(data_dir: Path) -> None:
     except ImportError:
         console.print(
             "[red]Erro:[/red] convert requer extras de análise:"
-            " pip install tesouro-direto-fetcher[analysis]"
+            r" uv add 'tesouro-direto-fetcher\[analysis]' "
+            "--index https://index.quantilica.com/simple/"
         )
         raise typer.Exit(1) from None
 
