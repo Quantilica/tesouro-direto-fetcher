@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
   canônica do registro; `tesouro-direto` não resolve para a distribuição).
 
 ### Alterado
+- `README.md`: a seção de instalação deixa de mandar `pip install` (fetchers do Fluxo B não estão no PyPI) e passa a mostrar `quantilica install td` (com `--extra analysis`) e `uv add --index` para uso como biblioteca.
 - `cli.py` protege o import do plugin; sem o host a CLI standalone sai com código 1 e orienta `quantilica install td`.
 - `cli.py`: removido `configure_cli_logging` do wrapper (o plugin já configura
   logging via `setup_rich_logging` em todos os comandos).

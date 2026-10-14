@@ -8,16 +8,20 @@ Para a documentação completa, visite [https://docs.quantilica.com](https://doc
 
 ## Instalação
 
-Instalação mínima (apenas download):
+Pela CLI unificada (recomendado):
 
 ```bash
-pip install "git+https://github.com/Quantilica/tesouro-direto-fetcher#egg=tesouro-direto-fetcher"
+quantilica install td
+# com o extra de análise (comandos convert e pipeline):
+quantilica install td --extra analysis
 ```
 
-Com análise e visualização (adiciona Polars e Altair):
+Como biblioteca num projeto, a partir do índice próprio (este pacote não é publicado no PyPI):
 
 ```bash
-pip install "git+https://github.com/Quantilica/tesouro-direto-fetcher#egg=tesouro-direto-fetcher[analysis]"
+uv add tesouro-direto-fetcher --index https://index.quantilica.com/simple/
+# com o extra de análise:
+uv add 'tesouro-direto-fetcher[analysis]' --index https://index.quantilica.com/simple/
 ```
 
 ## Uso Rápido
