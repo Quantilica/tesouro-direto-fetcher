@@ -5,7 +5,7 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [3.2.2] - 2026-10-14
 
 ### Corrigido
 - `plugin.py`: a dica de instalação do extra `analysis` mandava `pip install tesouro-direto-fetcher[analysis]`, que não funciona para fetchers do Fluxo B (fora do PyPI), e o Rich ainda engolia o `[analysis]` por tratá-lo como marcação, deixando só `pip install tesouro-direto-fetcher`. Agora a mensagem é `quantilica install td --extra analysis`.
