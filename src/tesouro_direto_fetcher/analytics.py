@@ -798,29 +798,3 @@ def calculate_portfolio_monthly_returns(
     df = df.with_columns(pl.Series("cumulative_return", cum_returns))
 
     return df
-
-
-def _generate_monthly_dates(start: date, end: date) -> list[date]:
-    """Generate list of first day of each month between start and end dates."""
-    if start > end:
-        return []
-    months = []
-    current = date(start.year, start.month, 1)
-    end_month = date(end.year, end.month, 1)
-    while current <= end_month:
-        months.append(current)
-        # Move to next month
-        if current.month == 12:
-            current = date(current.year + 1, 1, 1)
-        else:
-            current = date(current.year, current.month + 1, 1)
-    return months
-
-
-def _last_day_of_month(d: date) -> date:
-    """Return the last day of the month for a given date."""
-    if d.month == 12:
-        next_month = date(d.year + 1, 1, 1)
-    else:
-        next_month = date(d.year, d.month + 1, 1)
-    return next_month - timedelta(days=1)

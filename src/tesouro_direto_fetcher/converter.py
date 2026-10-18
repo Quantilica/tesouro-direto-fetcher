@@ -4,7 +4,13 @@ from pathlib import Path
 from . import reader
 
 if reader is None:
-    raise ImportError("Analysis extras (polars, etc.) are required.")
+    raise ImportError(
+        "Analysis extras (polars, etc.) are required. Install with: "
+        "uv add 'tesouro-direto-fetcher[analysis]' "
+        "--index https://index.quantilica.com/simple/"
+    )
+
+from quantilica.analytics.writer import to_parquet  # noqa: E402
 
 
 def convert_to_parquet(
@@ -30,9 +36,9 @@ def convert_to_parquet(
     reader_func = _get_reader_function(csv_path, dataset_type)
 
     # Read the data using the specialized reader (which cleans and types it)
-    # Polars DataFrames can be directly written to parquet
+    # and write it with quantilica metadata injected from the raw CSV sidecar.
     df = reader_func(csv_path)
-    df.write_parquet(parquet_path)
+    to_parquet(df, parquet_path, source_path=csv_path)
 
     return parquet_path
 

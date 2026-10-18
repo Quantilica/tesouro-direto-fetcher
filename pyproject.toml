@@ -38,7 +38,8 @@ td = "tesouro_direto_fetcher.plugin:app"
 [project.optional-dependencies]
 analysis = [
     "altair[save]>=6.0.0",
-    "quantilica-analytics>=0.2.0",
+    "polars>=1.0.0",
+    "quantilica-analytics>=0.3.0",
 ]
 
 [dependency-groups]

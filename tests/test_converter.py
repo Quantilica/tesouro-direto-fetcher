@@ -81,5 +81,44 @@ class TestReaderSales(unittest.TestCase):
             csv_path.unlink()
 
 
+class TestMetadataInjection(unittest.TestCase):
+    def test_convert_to_parquet_injects_quantilica_metadata(self):
+        import tempfile
+
+        import polars as pl
+        from quantilica.core.manifests import DownloadManifest
+
+        from tesouro_direto_fetcher import converter
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            csv_path = tmp_path / "dados.csv"
+            csv_path.write_text("a,b\n1,2\n", encoding="utf-8")
+
+            manifest = DownloadManifest(
+                source_id="tesouro-direto",
+                dataset_id="prices",
+                url="https://example.com/dados.csv",
+                fetched_at="2026-01-01T00:00:00+00:00",
+                sha256="a" * 64,
+                size_bytes=csv_path.stat().st_size,
+            )
+            csv_path.with_name(csv_path.name + ".manifest.json").write_text(
+                manifest.to_json(), encoding="utf-8"
+            )
+
+            original = converter._get_reader_function
+            converter._get_reader_function = lambda *a, **k: pl.read_csv
+            try:
+                parquet_path = tmp_path / "dados.parquet"
+                converter.convert_to_parquet(csv_path, parquet_path)
+            finally:
+                converter._get_reader_function = original
+
+            metadata = pl.read_parquet_metadata(parquet_path)
+            self.assertEqual(metadata["quantilica.dataset_id"], "prices")
+            self.assertEqual(metadata["quantilica.source_id"], "tesouro-direto")
+
+
 if __name__ == "__main__":
     unittest.main()
