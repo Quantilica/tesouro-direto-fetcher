@@ -21,7 +21,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "quantilica-core>=0.4.0",
+    "quantilica-core>=0.12.0",
 ]
 
 [project.urls]
@@ -39,7 +39,7 @@ td = "tesouro_direto_fetcher.plugin:app"
 analysis = [
     "altair[save]>=6.0.0",
     "polars>=1.0.0",
-    "quantilica-analytics>=0.3.0",
+    "quantilica-analytics>=0.4.0",
 ]
 
 [dependency-groups]
