@@ -5,6 +5,16 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.2.3] - 2026-10-20
+
+### Corrigido
+- Injeção de metadados de proveniência (`quantilica.*`) no esquema Parquet em `to_parquet`.
+- Remoção de duplicidades em `analytics.py`.
+- `src/tesouro_direto_fetcher/py.typed` esvaziado conforme PEP 561.
+
+### Alterado
+- Dependências atualizadas: `quantilica-core>=0.12.0` e `quantilica-analytics>=0.4.0`.
+
 ## [3.2.2] - 2026-10-14
 
 ### Corrigido
