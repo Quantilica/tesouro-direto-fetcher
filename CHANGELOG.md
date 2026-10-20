@@ -5,6 +5,12 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.2.4] - 2026-10-20
+
+### Corrigido
+- Sem o extra `analysis`, importar `tesouro_direto_fetcher.reader`, `.analytics`, `.fast_returns`, `.plot` ou `.converter` levantava `ModuleNotFoundError` cru (ou, no `converter`, uma mensagem em inglês em outro formato). Agora todos levantam `ImportError` acionável no padrão do ecossistema: `<módulo> requer o extra 'analysis': uv add 'tesouro-direto-fetcher[analysis]' --index https://index.quantilica.com/simple/`. Com o extra instalado, nada muda.
+- `make_plots.py`: linhas longas quebradas (E501).
+
 ## [3.2.3] - 2026-10-20
 
 ### Corrigido
