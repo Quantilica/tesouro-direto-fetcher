@@ -104,7 +104,8 @@ def run_investors(data_dir: Path):
         return
 
     full_data = pl.concat(all_data)
-    # Deduplicate by investor ID only (investors can have multiple records if registered with multiple institutions)
+    # Deduplicate by investor ID only (investors can have multiple records
+    # if registered with multiple institutions)
     # Keep the first occurrence
     full_data = full_data.unique(subset=[C.INVESTOR_ID.value], keep="first")
     # Drop dates before 2000
@@ -228,7 +229,10 @@ def main():
         "--data-dir",
         type=str,
         default="~/data/tesouro-direto-fetcher",
-        help="Directory containing the data files (default: ~/data/tesouro-direto-fetcher)",
+        help=(
+            "Directory containing the data files "
+            "(default: ~/data/tesouro-direto-fetcher)"
+        ),
     )
     args = parser.parse_args()
 
