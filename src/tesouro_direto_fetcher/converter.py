@@ -1,16 +1,16 @@
 from collections.abc import Callable
 from pathlib import Path
 
-from . import reader
+try:
+    from quantilica.analytics.writer import to_parquet
 
-if reader is None:
+    from . import reader
+except ImportError as exc:
     raise ImportError(
-        "Analysis extras (polars, etc.) are required. Install with: "
+        "tesouro_direto_fetcher.converter requer o extra 'analysis': "
         "uv add 'tesouro-direto-fetcher[analysis]' "
         "--index https://index.quantilica.com/simple/"
-    )
-
-from quantilica.analytics.writer import to_parquet  # noqa: E402
+    ) from exc
 
 
 def convert_to_parquet(

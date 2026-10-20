@@ -18,7 +18,14 @@ them depending on rounding.
 
 from datetime import date
 
-import polars as pl
+try:
+    import polars as pl
+except ImportError as exc:
+    raise ImportError(
+        "tesouro_direto_fetcher.fast_returns requer o extra 'analysis': "
+        "uv add 'tesouro-direto-fetcher[analysis]' "
+        "--index https://index.quantilica.com/simple/"
+    ) from exc
 
 from .constants import Column as C
 from .constants import OperationType

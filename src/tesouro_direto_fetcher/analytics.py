@@ -1,6 +1,13 @@
 from datetime import date, datetime, timedelta
 
-import polars as pl
+try:
+    import polars as pl
+except ImportError as exc:
+    raise ImportError(
+        "tesouro_direto_fetcher.analytics requer o extra 'analysis': "
+        "uv add 'tesouro-direto-fetcher[analysis]' "
+        "--index https://index.quantilica.com/simple/"
+    ) from exc
 
 from .constants import (
     AccountStatus,

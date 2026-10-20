@@ -1,5 +1,12 @@
-import altair as alt
-import polars as pl
+try:
+    import altair as alt
+    import polars as pl
+except ImportError as exc:
+    raise ImportError(
+        "tesouro_direto_fetcher.plot requer o extra 'analysis': "
+        "uv add 'tesouro-direto-fetcher[analysis]' "
+        "--index https://index.quantilica.com/simple/"
+    ) from exc
 
 from . import analytics
 from .constants import Column as C

@@ -12,7 +12,14 @@ defined in the `Column` enum.
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
-import polars as pl
+try:
+    import polars as pl
+except ImportError as exc:
+    raise ImportError(
+        "tesouro_direto_fetcher.reader requer o extra 'analysis': "
+        "uv add 'tesouro-direto-fetcher[analysis]' "
+        "--index https://index.quantilica.com/simple/"
+    ) from exc
 
 from .constants import (
     NTNB1_CODE,
