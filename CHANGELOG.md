@@ -5,7 +5,7 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
-## [4.0.0] - 2026-10-26
+## [4.0.0] - 2026-10-27
 
 ### Alterado
 - **Incompatível:** `convert` deixa de gravar um `.parquet` ao lado de cada CSV e passa a escrever num lake de Parquet particionado no estilo Hive: `<lake>/tesouro-direto/<dataset_id>/periodo=<periodo>/<arquivo>.parquet`. Só os microdados de investidores e de operações são convertidos; a partição `periodo` vem do nome do arquivo (`...-de-2019` → `periodo=2019`, `...-ate-2017` → `periodo=ate-2017`) e não é gravada dentro do Parquet. Cada dataset ganha um `_dataset.json` com o descritor, e cada Parquet leva os metadados de proveniência (`quantilica.*`). Não há modo de layout antigo; reconverta os CSVs no novo layout.
