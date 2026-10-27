@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import datetime as dt
 from pathlib import Path
-from typing import Annotated, Any
+from typing import Any
 
-import typer
 from quantilica.cli.sdk import FetcherApp
-from quantilica.cli.ui import get_console, setup_rich_logging
 
 from tesouro_direto_fetcher.constants import (
     DATASET_BUYBACKS,
@@ -19,8 +17,6 @@ from tesouro_direto_fetcher.constants import (
     DATASET_SALES,
 )
 from tesouro_direto_fetcher.storage import DataRepository
-
-console = get_console()
 
 GROUPS = {
     DATASET_PRICES_RATES: {"name": "Taxas dos Títulos Ofertados"},
@@ -116,36 +112,22 @@ fetcher = FetcherApp(
 app = fetcher.app
 
 
-@app.command("convert")
-def cmd_convert(
-    data_dir: Annotated[
-        Path,
-        typer.Argument(help="Diretório de dados (raiz da árvore <dataset_id>/)"),
-    ],
-    verbose: Annotated[bool, typer.Option("--verbose", help="Logs detalhados")] = False,
-) -> None:
-    """Converter CSVs mais recentes para Parquet (requer extras de análise)."""
-    setup_rich_logging(verbose, console=console)
-    _convert_dir(data_dir)
+def convert(
+    input_dir: Path,
+    lake_dir: Path,
+    *,
+    dataset: list[str] | None = None,
+    force: bool = False,
+) -> Any:
+    """Convert the raw microdata under ``input_dir`` into the lake at ``lake_dir``.
+
+    The lake module needs the ``analysis`` extra, so it is imported on demand;
+    the ``ImportError`` is handled by the ``convert`` and ``pipeline`` commands.
+    """
+    from tesouro_direto_fetcher import lake
+
+    return lake.converter.convert(input_dir, lake_dir, datasets=dataset, force=force)
 
 
-def _convert_dir(data_dir: Path) -> None:
-    """Converter os CSVs mais recentes de ``data_dir`` para Parquet."""
-    try:
-        from tesouro_direto_fetcher import converter
-    except ImportError:
-        console.print(
-            "[red]Erro:[/red] convert requer extras de análise:"
-            " quantilica install td --extra analysis"
-        )
-        raise typer.Exit(1) from None
-
-    if not data_dir.is_dir():
-        console.print(f"[red]Erro:[/red] diretório '{data_dir}' não existe.")
-        raise typer.Exit(1)
-
-    repo = DataRepository(data_dir)
-    for dataset_id in repo.list_datasets():
-        for fp in repo.get_all_latest_files(dataset_id):
-            output_path = converter.convert_to_parquet(fp)
-            console.print(f"  [green]✓[/green] {fp.name} → {output_path.name}")
+fetcher.command_convert(convert)
+fetcher.command_pipeline(convert)

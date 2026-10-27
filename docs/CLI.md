@@ -5,7 +5,7 @@
 The `tesouro-direto-fetcher` command-line interface (CLI) provides a
 convenient way to download, inspect, and convert Brazilian Tesouro Direto data
 from the official CKAN API. The CLI exposes three commands: `sync` (download),
-`convert` (CSV → Parquet) and `pipeline` (sync → convert chained).
+`convert` (CSV → Parquet lake) and `pipeline` (sync → convert chained).
 
 ## Installation
 
@@ -33,7 +33,7 @@ tesouro-direto-fetcher <command> [options]
 ### Available Commands
 
 - `sync` - Sync datasets from the Tesouro Transparente CKAN API
-- `convert` - Convert downloaded CSVs to Parquet (requires analysis extras)
+- `convert` - Convert downloaded investor and operation CSVs to a Hive-partitioned Parquet lake (requires analysis extras)
 - `pipeline` - Run the full pipeline: sync → convert
 
 ### Global Options
@@ -92,35 +92,49 @@ Files are saved with timestamps in their filenames (e.g.,
 
 ### `convert`
 
-Convert the most recent CSV files under a data directory tree to Parquet for
-better performance and storage efficiency. This command is only available when
-the `analysis` optional dependencies are installed.
+Convert the most recent investor and operation CSVs under a data directory tree
+into a Hive-partitioned Parquet lake. This command is only available when the
+`analysis` optional dependencies are installed.
 
 **Syntax:**
 ```bash
-tesouro-direto-fetcher convert <data_dir>
+tesouro-direto-fetcher convert [-i INPUT] [--lake LAKE] [--dataset DATASET]... [--force]
 ```
 
-**Arguments:**
+**Options:**
 
-- `data_dir`
-  - Data directory (root of the `<dataset_id>/` tree produced by `sync`)
-  - Type: Path
-  - Required
+- `-i INPUT, --input INPUT` — directory with the downloaded CSVs (root of the
+  `<dataset_id>/` tree produced by `sync`)
+- `--lake LAKE` (aliases `-o`, `--output`) — lake root (default: the
+  `QUANTILICA_LAKE_DIR` environment variable)
+- `--dataset DATASET` — convert only this dataset; repeatable. Accepts
+  `investidores-do-tesouro-direto` / `investidores` and
+  `operacoes-do-tesouro-direto` / `operacoes`
+- `--force` — reconvert even if the file's `sha256` is already in the lake
+- `--verbose` — detailed logs
 
 **Examples:**
 
 ```bash
-# Convert the latest CSVs under ./data
-tesouro-direto-fetcher convert ./data
+tesouro-direto-fetcher convert -i ./data --lake ./lake
+tesouro-direto-fetcher convert -i ./data --lake ./lake --dataset operacoes --force
 ```
 
-Each converted file is written with the same base name and a `.parquet`
-extension.
+Output layout, one Parquet per CSV, partitioned by the period in the file name:
+
+```text
+<lake>/tesouro-direto/<dataset_id>/_dataset.json
+<lake>/tesouro-direto/<dataset_id>/periodo=<2019|ate-2017>/<file>.parquet
+```
+
+Already converted files are skipped; files whose header lacks the expected
+columns (e.g. an HTML error page saved as CSV) are rejected and listed in the
+final report, and the command exits with code 1.
 
 ### `pipeline`
 
-Run the full pipeline in one command: `sync` followed by `convert`.
+Run the full pipeline in one command: `sync` followed by `convert`. Use
+`--lake` to choose the lake root (default: `QUANTILICA_LAKE_DIR`).
 
 **Syntax:**
 ```bash
@@ -162,7 +176,7 @@ The following dataset types are supported:
 
 **Convert command not available:**
 ```
-Erro: convert requer extras de análise: pip install tesouro-direto-fetcher[analysis]
+Erro: convert requer extras de análise: quantilica install td --extra analysis
 ```
 **Solution:** Install with analysis extras: `pip install "git+https://github.com/Quantilica/tesouro-direto-fetcher#egg=tesouro-direto-fetcher[analysis]"`
 

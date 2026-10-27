@@ -5,6 +5,19 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [4.0.0] - 2026-10-26
+
+### Alterado
+- **Incompatível:** `convert` deixa de gravar um `.parquet` ao lado de cada CSV e passa a escrever num lake de Parquet particionado no estilo Hive: `<lake>/tesouro-direto/<dataset_id>/periodo=<periodo>/<arquivo>.parquet`. Só os microdados de investidores e de operações são convertidos; a partição `periodo` vem do nome do arquivo (`...-de-2019` → `periodo=2019`, `...-ate-2017` → `periodo=ate-2017`) e não é gravada dentro do Parquet. Cada dataset ganha um `_dataset.json` com o descritor, e cada Parquet leva os metadados de proveniência (`quantilica.*`). Não há modo de layout antigo; reconverta os CSVs no novo layout.
+- **Incompatível:** `convert` e `pipeline` passam a usar os comandos padrão do ecossistema. Em vez do argumento posicional `<data_dir>`, `convert` recebe `-i/--input` (diretório dos CSVs), `--lake` (raiz do lake, com `-o/--output` como sinônimo; padrão `QUANTILICA_LAKE_DIR`), `--dataset` (repetível) e `--force`. `pipeline` ganha `--lake` (`--parquet-dir` segue aceito). O relatório final mostra arquivos convertidos, pulados e com erro, e o comando sai com código 1 se houver erro.
+- As colunas do lake são gravadas como texto, com nomes normalizados; em investidores, `idade` é renomeada para `idade_do_investidor`.
+
+### Adicionado
+- `tesouro_direto_fetcher.lake` (requer o extra `analysis`): `converter.convert(input_dir, lake_dir, datasets=None, force=False)` devolve as contagens `converted` e `skipped` e a lista `errors`.
+- Idempotência por `sha256`: um CSV já presente no lake com o mesmo `sha256` é pulado, e uma nova publicação do mesmo período substitui o Parquet anterior em vez de acumular arquivos.
+- CSVs sem as colunas obrigatórias (por exemplo, uma página HTML de erro salva como CSV) são recusados sem interromper os demais arquivos.
+- Ponto de entrada `quantilica.lake` (`tesouro-direto`), para ferramentas localizarem o conversor sem importar o pacote.
+
 ## [3.2.4] - 2026-10-20
 
 ### Corrigido

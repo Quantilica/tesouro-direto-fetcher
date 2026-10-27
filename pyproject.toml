@@ -1,6 +1,6 @@
 [project]
 name = "tesouro-direto-fetcher"
-version = "3.2.4"
+version = "4.0.0"
 description = "Easly download & read brazilian Tesouro Direto's data"
 readme = "README.md"
 authors = [
@@ -34,6 +34,9 @@ tesouro-direto-fetcher = "tesouro_direto_fetcher.cli:main"
 
 [project.entry-points."quantilica.fetchers"]
 td = "tesouro_direto_fetcher.plugin:app"
+
+[project.entry-points."quantilica.lake"]
+tesouro-direto = "tesouro_direto_fetcher.lake:converter"
 
 [project.optional-dependencies]
 analysis = [
