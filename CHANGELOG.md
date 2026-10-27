@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Idempotência por `sha256`: um CSV já presente no lake com o mesmo `sha256` é pulado, e uma nova publicação do mesmo período substitui o Parquet anterior em vez de acumular arquivos.
 - CSVs sem as colunas obrigatórias (por exemplo, uma página HTML de erro salva como CSV) são recusados sem interromper os demais arquivos.
 - Ponto de entrada `quantilica.lake` (`tesouro-direto`), para ferramentas localizarem o conversor sem importar o pacote.
+- Dependência `quantilica-core` atualizada para `>=0.13.0` e, no extra `analysis`, `quantilica-analytics` para `>=0.5.0`: são as primeiras versões com o contrato e o escritor do lake.
 
 ## [3.2.4] - 2026-10-20
 

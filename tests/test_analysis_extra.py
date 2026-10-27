@@ -25,6 +25,9 @@ BLOCKED = [
 
 def test_analysis_extra_mensagem_acionavel():
     salvos = {name: sys.modules.get(name) for name in BLOCKED}
+    # Devolve depois só os módulos que já estavam carregados: reimportar todos
+    # quebraria num ambiente sem uma dependência opcional (ex.: altair do plot).
+    carregados = {name: sys.modules[name] for name in MODULES if name in sys.modules}
     try:
         for module_name in MODULES:
             for name in BLOCKED:
@@ -43,6 +46,4 @@ def test_analysis_extra_mensagem_acionavel():
                 sys.modules.pop(name, None)
         for module_name in MODULES:
             sys.modules.pop(module_name, None)
-        if salvos["polars"] is not None:
-            for module_name in MODULES:
-                importlib.import_module(module_name)
+        sys.modules.update(carregados)
