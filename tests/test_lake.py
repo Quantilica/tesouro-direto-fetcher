@@ -265,3 +265,46 @@ def test_unreadable_csv_is_reported_without_aborting(raw: Path, lake: Path) -> N
     assert result.converted == 3
     assert len(result.errors) == 1
     assert "de-2023" in result.errors[0]
+
+
+def test_snapshot_datasets_and_buybacks_split(tmp_path: Path) -> None:
+    root = tmp_path / "raw"
+    header = "Tipo Titulo;Vencimento do Titulo;Data Resgate;PU;Quantidade;Valor\n"
+    row = "Tesouro Selic;01/03/2025;01/03/2025;10000,00;1,00;10000,00\n"
+    for name in (
+        "pagamento-de-cupom-de-juros-do-tesouro-direto@20261027T000000.csv",
+        "vencimentos-do-tesouro-direto@20261027T000000.csv",
+    ):
+        _write(root, "resgates-do-tesouro-direto", name, header + row)
+    _write(
+        root,
+        "resgates-do-tesouro-direto",
+        "recompras-do-tesouro-direto@20261027T000000.csv",
+        "Tipo Titulo;Vencimento do Titulo;Data Resgate;Quantidade;Valor\n"
+        "Tesouro Educa+;15/12/2040;14/12/2023;0,54;1019,84\n",
+    )
+    _write(
+        root,
+        "estoque-do-tesouro-direto",
+        "estoque-do-tesouro-direto@20261016T000000.csv",
+        "Tipo Titulo;Vencimento do Titulo;Mes Estoque;PU;Quantidade;Valor Estoque\n"
+        "Tesouro Selic;01/03/2025;09/2020;10698,13;1,00;10698,13\n",
+    )
+    lake = tmp_path / "lake"
+
+    res = converter.convert(root, lake)
+
+    assert res.errors == []
+    assert res.converted == 4
+    for dataset_id, rows in (
+        ("pagamento-de-cupom-de-juros-do-tesouro-direto", 1),
+        ("vencimentos-do-tesouro-direto", 1),
+        ("recompras-do-tesouro-direto", 1),
+        ("estoque-do-tesouro-direto", 1),
+    ):
+        dataset_dir = lake / SOURCE_ID / dataset_id
+        assert check_dataset(dataset_dir) == []
+        df = scan_dataset(dataset_dir).collect()
+        assert df.height == rows
+        assert "periodo" not in df.columns
+        assert "tipo_titulo" in df.columns

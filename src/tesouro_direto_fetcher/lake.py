@@ -25,7 +25,14 @@ except ImportError as exc:
     ) from exc
 
 from tesouro_direto_fetcher import __version__
-from tesouro_direto_fetcher.constants import DATASET_INVESTORS, DATASET_OPERATIONS
+from tesouro_direto_fetcher.constants import (
+    DATASET_BUYBACKS,
+    DATASET_INVESTORS,
+    DATASET_MINT_STOCK,
+    DATASET_OPERATIONS,
+    DATASET_PRICES_RATES,
+    DATASET_SALES,
+)
 from tesouro_direto_fetcher.storage import DataRepository
 
 SOURCE_ID = "tesouro-direto"
@@ -45,6 +52,13 @@ class DatasetSpec:
     encoding: str = "utf-8"
     header: bool = True
     rename: dict[str, str] = field(default_factory=dict)
+    # Pasta do bruto, quando difere do dataset (os três arquivos de resgates).
+    raw_dir: str | None = None
+    # Só os arquivos cuja chave (nome sem data) é esta; None aceita todos.
+    prefix: str | None = None
+    # Investidores e operações vêm divididos por ano (``periodo``); os demais são
+    # um retrato único.
+    partitioned: bool = True
 
 
 SPECS: dict[str, DatasetSpec] = {
@@ -59,6 +73,39 @@ SPECS: dict[str, DatasetSpec] = {
         alias="operacoes",
         required=("codigo_do_investidor", "data_da_operacao", "valor_da_operacao"),
     ),
+    DATASET_MINT_STOCK: DatasetSpec(
+        dataset_id=DATASET_MINT_STOCK,
+        alias="estoque",
+        required=("tipo_titulo", "vencimento_do_titulo", "mes_estoque"),
+        partitioned=False,
+    ),
+    DATASET_PRICES_RATES: DatasetSpec(
+        dataset_id=DATASET_PRICES_RATES,
+        alias="taxas",
+        required=("tipo_titulo", "data_vencimento", "data_base"),
+        partitioned=False,
+    ),
+    DATASET_SALES: DatasetSpec(
+        dataset_id=DATASET_SALES,
+        alias="vendas",
+        required=("tipo_titulo", "vencimento_do_titulo", "data_de_liquidacao_da_venda"),
+        partitioned=False,
+    ),
+    **{
+        dataset_id: DatasetSpec(
+            dataset_id=dataset_id,
+            alias=alias,
+            required=("tipo_titulo", "vencimento_do_titulo", "data_resgate"),
+            raw_dir=DATASET_BUYBACKS,
+            prefix=dataset_id,
+            partitioned=False,
+        )
+        for dataset_id, alias in (
+            ("pagamento-de-cupom-de-juros-do-tesouro-direto", "cupons"),
+            ("recompras-do-tesouro-direto", "recompras"),
+            ("vencimentos-do-tesouro-direto", "vencimentos"),
+        )
+    },
 }
 
 _BY_NAME = {
@@ -144,25 +191,31 @@ class LakeConverter:
         force: bool,
         result: ConvertResult,
     ) -> None:
-        files = sorted(repo.get_all_latest_files(spec.dataset_id))
+        files = sorted(repo.get_all_latest_files(spec.raw_dir or spec.dataset_id))
+        if spec.prefix is not None:
+            files = [p for p in files if file_key(p) == spec.prefix]
         if not files:
             return
+        keys = [PARTITION_KEY] if spec.partitioned else []
         writer = LakeWriter(
             lake_dir / SOURCE_ID / spec.dataset_id,
             DatasetDescriptor(
                 source_id=SOURCE_ID,
                 dataset_id=spec.dataset_id,
                 alias=spec.alias,
-                partition_keys=[PARTITION_KEY],
-                partition_types={PARTITION_KEY: "varchar"},
+                partition_keys=keys,
+                partition_types={k: "varchar" for k in keys},
             ),
             force=force,
         )
         for path in files:
+            partitions = (
+                {PARTITION_KEY: periodo_from_name(path)} if spec.partitioned else {}
+            )
             try:
                 written = writer.write_duckdb(
                     path,
-                    partitions={PARTITION_KEY: periodo_from_name(path)},
+                    partitions=partitions,
                     separator=spec.separator,
                     encoding=spec.encoding,
                     header=spec.header,
