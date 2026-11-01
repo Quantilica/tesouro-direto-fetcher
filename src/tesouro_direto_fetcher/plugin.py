@@ -54,17 +54,14 @@ def list_datasets(group: str) -> list[dict[str, Any]]:
     Returns:
         list[dict[str, Any]]: A list of dataset dictionaries containing their metadata.
     """
-    from quantilica.core.http import HttpClient
+    from quantilica.core.ckan import CkanClient
 
-    from tesouro_direto_fetcher.constants import CKAN_API_URL
+    from tesouro_direto_fetcher.constants import CKAN_BASE_URL
 
-    client = HttpClient(timeout=60.0)
+    ckan = CkanClient(CKAN_BASE_URL)
     try:
-        params = {"id": group}
-        data = client.get_json(CKAN_API_URL, params=params)
-        if not data.get("success"):
-            return []
-        resources = data["result"]["resources"]
+        pkg = ckan.package_show(group)
+        resources = pkg.get("resources", [])
     except Exception:
         return []
 

@@ -197,6 +197,7 @@ class TradedLast12Months(enum.Enum):
         }
 
 
+CKAN_BASE_URL = "https://www.tesourotransparente.gov.br/ckan"
 CKAN_API_URL = "https://www.tesourotransparente.gov.br/ckan/api/3/action/package_show"
 
 DATASET_PRICES_RATES = "taxas-dos-titulos-ofertados-pelo-tesouro-direto"

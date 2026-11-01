@@ -46,23 +46,38 @@ class DataRepository(StampedDataRepository):
         """
         return self.dataset_path(dataset_id, filename)
 
-    def path_for_entry(self, entry: dict, last_modified: dt.date | None = None) -> Path:
+    def path_for_entry(
+        self, entry: dict, last_modified: dt.date | dt.datetime | None = None
+    ) -> Path:
         """Calculate the destination path for a given entry.
 
         Args:
             entry (dict): The dataset entry metadata.
-            last_modified (dt.date | None, optional): The last modified date. Defaults
-                to None.
+            last_modified (dt.date | dt.datetime | None, optional): The last modified
+                timestamp. Defaults to None.
 
         Returns:
             Path: The destination path for the entry.
         """
-        last_mod_str = None
-        if last_modified:
+        ckan_res = entry.get("ckan_resource") or {}
+        ckan_str = ckan_res.get("last_modified") or ckan_res.get("created")
+
+        last_mod_str: str | None = None
+        if isinstance(last_modified, dt.datetime):
             last_mod_str = last_modified.isoformat()
-        elif "ckan_resource" in entry:
-            r = entry["ckan_resource"]
-            last_mod_str = r.get("last_modified") or r.get("created")
+        elif isinstance(last_modified, dt.date):
+            ckan_dt: dt.datetime | None = None
+            if ckan_str:
+                try:
+                    ckan_dt = dt.datetime.fromisoformat(ckan_str)
+                except ValueError:
+                    ckan_dt = None
+            if ckan_dt and ckan_dt.date() == last_modified:
+                last_mod_str = ckan_str
+            else:
+                last_mod_str = last_modified.isoformat()
+        elif ckan_str:
+            last_mod_str = ckan_str
 
         filename = self.generate_filename(entry["id"], last_mod_str)
         return self.dataset_path(entry["group"], filename)

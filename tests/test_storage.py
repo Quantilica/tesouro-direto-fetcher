@@ -77,6 +77,27 @@ class TestDataRepository(unittest.TestCase):
     def test_list_datasets(self):
         self.assertEqual(self.repo.list_datasets(), [self.DATASET_ID])
 
+    def test_path_for_entry_preserves_ckan_time(self):
+        import datetime as dt
+
+        entry = {
+            "group": "taxas",
+            "id": "taxas-referenciais",
+            "ckan_resource": {"last_modified": "2026-05-01T15:30:22"},
+        }
+        # When last_modified is date only for the same day
+        p = self.repo.path_for_entry(entry, last_modified=dt.date(2026, 5, 1))
+        self.assertIn("taxas-referenciais@20260501T153022.csv", p.name)
+
+        # When last_modified has different date, use last_modified
+        p2 = self.repo.path_for_entry(entry, last_modified=dt.date(2026, 5, 2))
+        self.assertIn("taxas-referenciais@20260502T000000.csv", p2.name)
+
+        # When last_modified is datetime, use last_modified datetime
+        dt_val = dt.datetime(2026, 5, 1, 18, 45, 10)
+        p3 = self.repo.path_for_entry(entry, last_modified=dt_val)
+        self.assertIn("taxas-referenciais@20260501T184510.csv", p3.name)
+
 
 if __name__ == "__main__":
     unittest.main()
