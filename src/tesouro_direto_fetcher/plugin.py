@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from quantilica.cli.sdk import FetcherApp
+from quantilica.core.sync import FreshnessPolicy
 
 from tesouro_direto_fetcher.constants import (
     DATASET_BUYBACKS,
@@ -104,6 +105,7 @@ fetcher = FetcherApp(
     aliases_dict=GROUP_ALIASES,
     list_datasets=list_datasets,
     path_builder=path_builder,
+    freshness_policy=FreshnessPolicy.REMOTE_ONLY,
 )
 
 app = fetcher.app

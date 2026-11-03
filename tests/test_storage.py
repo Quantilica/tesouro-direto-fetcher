@@ -98,6 +98,20 @@ class TestDataRepository(unittest.TestCase):
         p3 = self.repo.path_for_entry(entry, last_modified=dt_val)
         self.assertIn("taxas-referenciais@20260501T184510.csv", p3.name)
 
+    def test_path_for_entry_fallback_timestamp(self):
+        """When last_modified is None, the filename gets today's @YYYYMMDD timestamp."""
+        import datetime as dt
+
+        entry = {
+            "group": "taxas",
+            "id": "taxas-referenciais",
+            "ckan_resource": {},
+        }
+        # When last_modified is None, should use today's date
+        p = self.repo.path_for_entry(entry, last_modified=None)
+        today_str = dt.date.today().strftime("%Y%m%d")
+        self.assertIn(f"taxas-referenciais@{today_str}T000000.csv", p.name)
+
 
 if __name__ == "__main__":
     unittest.main()

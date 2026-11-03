@@ -79,20 +79,28 @@ class DataRepository(StampedDataRepository):
         elif ckan_str:
             last_mod_str = ckan_str
 
-        filename = self.generate_filename(entry["id"], last_mod_str)
+        # Fallback: use today's date when no timestamp is available
+        timestamp = last_modified or dt.date.today()
+        filename = self.generate_filename(entry["id"], last_mod_str, timestamp)
         return self.dataset_path(entry["group"], filename)
 
     @staticmethod
-    def generate_filename(name: str, last_modified: str | None = None) -> str:
+    def generate_filename(
+        name: str,
+        last_modified: str | None = None,
+        fallback_timestamp: dt.date | dt.datetime | None = None,
+    ) -> str:
         """Return ``<slug>@<YYYYMMDDTHHMMSS>.csv`` for a CKAN resource.
 
-        Returns ``<slug>.csv`` (no stamp) when ``last_modified`` is absent or
-        unparseable, rather than inventing a timestamp.
+        Uses ``fallback_timestamp`` (date or datetime) when ``last_modified`` is
+        absent or unparseable, to ensure files always carry a timestamp.
 
         Args:
             name (str): The base name of the resource.
             last_modified (str | None, optional): ISO formatted last modified string.
                 Defaults to None.
+            fallback_timestamp (dt.date | dt.datetime | None, optional): Fallback
+                timestamp to use when no last_modified is available. Defaults to None.
 
         Returns:
             str: The generated filename.
@@ -104,4 +112,10 @@ class DataRepository(StampedDataRepository):
                 timestamp = dt.datetime.fromisoformat(last_modified)
             except ValueError:
                 pass
+        if timestamp is None and fallback_timestamp is not None:
+            if isinstance(fallback_timestamp, dt.datetime):
+                timestamp = fallback_timestamp
+            else:
+                # date -> datetime at midnight
+                timestamp = dt.datetime.combine(fallback_timestamp, dt.time.min)
         return stamp_filename(name_slug, "csv", timestamp, precision="datetime")
