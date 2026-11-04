@@ -105,6 +105,7 @@ fetcher = FetcherApp(
     aliases_dict=GROUP_ALIASES,
     list_datasets=list_datasets,
     path_builder=path_builder,
+    default_output=Path("/data/tesouro-direto"),
     freshness_policy=FreshnessPolicy.HEAD_FALLBACK_GET,
 )
 
@@ -121,9 +122,16 @@ def convert(
     """Convert the raw microdata under ``input_dir`` into the lake at ``lake_dir``.
 
     The lake module needs the ``analysis`` extra, so it is imported on demand;
-    the ``ImportError`` is handled by the ``convert`` and ``pipeline`` commands.
+    a missing extra raises an ``ImportError`` with an actionable message,
+    handled by the ``convert`` and ``pipeline`` commands.
     """
-    from tesouro_direto_fetcher import lake
+    try:
+        from tesouro_direto_fetcher import lake
+    except ImportError as exc:
+        raise ImportError(
+            "Conversão para o lake requer o extra 'analysis'. "
+            "Instale com: quantilica install tesouro-direto --extra analysis"
+        ) from exc
 
     return lake.converter.convert(input_dir, lake_dir, datasets=dataset, force=force)
 
