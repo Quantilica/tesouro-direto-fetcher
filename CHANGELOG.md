@@ -5,6 +5,15 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+
+### Corrigido
+- Sem o extra `analysis`, o comando `convert` termina com código 1 e a instrução de instalação (`quantilica install tesouro-direto --extra analysis`), sem traceback.
+
+### Alterado
+- O diretório de saída padrão (`/data/tesouro-direto`) passa a ser declarado explicitamente no plugin; o valor não muda.
+- Os tipos das chaves de partição vêm de `partition_types_for` do `quantilica-core`, com resultado idêntico no lake.
+
 ## [4.2.0] - 2026-11-04
 
 ### Corrigido
