@@ -16,7 +16,7 @@ from pathlib import Path
 try:
     import duckdb
     from quantilica.analytics.lake import LakeError, LakeWriter
-    from quantilica.core.lake import DatasetDescriptor, file_key
+    from quantilica.core.lake import DatasetDescriptor, file_key, partition_types_for
 except ImportError as exc:
     raise ImportError(
         "tesouro_direto_fetcher.lake requer o extra 'analysis': "
@@ -204,7 +204,7 @@ class LakeConverter:
                 dataset_id=spec.dataset_id,
                 alias=spec.alias,
                 partition_keys=keys,
-                partition_types={k: "varchar" for k in keys},
+                partition_types=partition_types_for(keys),
             ),
             force=force,
         )
