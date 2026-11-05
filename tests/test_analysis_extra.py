@@ -10,7 +10,6 @@ MODULES = [
     "tesouro_direto_fetcher.analytics",
     "tesouro_direto_fetcher.fast_returns",
     "tesouro_direto_fetcher.plot",
-    "tesouro_direto_fetcher.converter",
     "tesouro_direto_fetcher.lake",
 ]
 

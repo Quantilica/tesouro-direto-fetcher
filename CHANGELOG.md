@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Removido
+- Módulo `tesouro_direto_fetcher.converter` (`convert_to_parquet`): a conversão para Parquet é feita pelo comando `convert` (lake particionado), que já substituía esse caminho. Os arquivos já gravados no lake não mudam de nome nem de formato.
+
 ## [4.2.1] - 2026-11-04
 
 ### Corrigido
