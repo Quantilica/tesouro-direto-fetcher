@@ -13,7 +13,14 @@ from quantilica.core.storage import StampedDataRepository, slugify, stamp_filena
 
 
 class DataRepository(StampedDataRepository):
-    """Tesouro Direto data store using the ``<dataset_id>/`` layout."""
+    """Tesouro Direto data store using the ``<dataset_id>/`` layout.
+
+    Specializes ``BaseDataRepository`` (via ``StampedDataRepository``):
+    ``path_for_entry`` is overridden to keep the existing CKAN-timestamped
+    names (``<slug>@<YYYYMMDDTHHMMSS>.csv``), which the generic
+    ``BaseDataRepository.path_for_entry`` (date precision, partition token)
+    would rename and break the files already stored.
+    """
 
     def list_datasets(self) -> list[str]:
         """Alias for ``list_dataset_ids`` to match CLI usage.
