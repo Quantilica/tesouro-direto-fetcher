@@ -110,7 +110,7 @@ versão.
 - Gráficos prontos com Altair (extra opcional `[analysis]`, que adiciona Polars e
   Altair).
 
-### Histórico anterior
+**Histórico anterior.**
 
 Versões até a 3.0.0 antecedem a adoção deste changelog e estão registradas nas
 tags do repositório: 2.1.1 (2026-02-09), 2.0.0 (2026-01-31), 1.1.2 (2026-01-07),
