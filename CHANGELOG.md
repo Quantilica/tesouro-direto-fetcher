@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [5.0.0] - 2026-11-06
+
 ### Corrigido
 - Falha ao consultar o catálogo do Tesouro Transparente (conexão recusada ou resetada, resposta de erro) deixa de ser silenciada: o erro é registrado com o motivo e propagado, em vez de o `sync` terminar com sucesso sem baixar nada.
 
