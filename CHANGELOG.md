@@ -7,6 +7,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Corrigido
+- Falha ao consultar o catálogo do Tesouro Transparente (conexão recusada ou resetada, resposta de erro) deixa de ser silenciada: o erro é registrado com o motivo e propagado, em vez de o `sync` terminar com sucesso sem baixar nada.
+
 ### Removido
 - Módulo `tesouro_direto_fetcher.converter` (`convert_to_parquet`): a conversão para Parquet é feita pelo comando `convert` (lake particionado), que já substituía esse caminho. Os arquivos já gravados no lake não mudam de nome nem de formato.
 

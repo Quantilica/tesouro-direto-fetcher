@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import datetime as dt
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,8 @@ from tesouro_direto_fetcher.constants import (
     DATASET_SALES,
 )
 from tesouro_direto_fetcher.storage import DataRepository
+
+logger = logging.getLogger(__name__)
 
 GROUPS = {
     DATASET_PRICES_RATES: {"name": "Taxas dos Títulos Ofertados"},
@@ -63,8 +66,10 @@ def list_datasets(group: str) -> list[dict[str, Any]]:
     try:
         pkg = ckan.package_show(group)
         resources = pkg.get("resources", [])
-    except Exception:
-        return []
+    except Exception as exc:
+        # Não engolir: uma lista vazia faz o sync terminar com 0 sem baixar nada.
+        logger.error("Falha ao consultar o CKAN para o grupo %s: %s", group, exc)
+        raise
 
     entries = []
     for r in resources:
