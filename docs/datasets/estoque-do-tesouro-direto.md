@@ -60,7 +60,7 @@ O estoque usa a metodologia do estoque da Dívida Pública Federal: os juros sã
 
 - O fetcher consulta o catálogo CKAN do Tesouro Transparente (conjunto `estoque-do-tesouro-direto`) e baixa o recurso em CSV. Os recursos em PDF (metadados) não são baixados.
 - O arquivo da fonte (`estoquetesourodireto.csv`) traz a série inteira. No bruto, o fetcher grava `estoque-do-tesouro-direto@AAAAMMDDTHHMMSS.csv`, em que o carimbo é a data de última modificação do recurso no catálogo; versões sucessivas convivem na pasta e o lake converte a mais recente.
-- Valores no Drive em 2026-11-10: duas versões (`@20260916` e `@20261016`).
+- Versões no bruto em 2026-11-10: duas versões (`@20260916` e `@20261016`).
 
 ## Conteúdo
 

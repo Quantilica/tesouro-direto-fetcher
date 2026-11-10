@@ -72,7 +72,7 @@ São dados individuais com identificador numérico, sem nome nem CPF. Os exemplo
 
 ## Conteúdo
 
-- Uma linha por operação. Cobertura nominal: operações desde janeiro de 2014 (metadados), arquivos de 2014 a 2026 no Drive em 2026-11-10 (listagem do bruto).
+- Uma linha por operação. Cobertura nominal: operações desde janeiro de 2014 (metadados), arquivos de 2014 a 2026 no bruto em 2026-11-10 (listagem do bruto).
 - Amostra convertida: o ano de 2014, com 554.363 linhas, 248 dias de 2014-01-02 a 2014-12-30, 97.576 códigos de investidor distintos. Para 2019, o arquivo completo tem 7.884.807 linhas (conferido em 2026-11-10; ver Cuidados de uso). Não converti os demais anos.
 - Tipos de operação em 2014: `C` 475.438, `V` 69.520, `D` 4.815 e `R` 4.590 linhas; os canais `D` e `R` só aparecem pelo `S` (site).
 
@@ -100,7 +100,7 @@ São dados individuais com identificador numérico, sem nome nem CPF. Os exemplo
 
 ## Cuidados de uso
 
-- **Arquivo de 2019 truncado no Drive.** Em 2026-11-10, o bruto de 2019 tem duas versões: `@20261006T000000` (556.661.638 bytes, 7.884.807 linhas) e `@20261006T131706` (314.966.191 bytes, 4.462.069 linhas). A segunda, que o conversor escolhe por ser a mais recente, termina no meio de uma linha e continua com uma página HTML de erro (`Server Error`), embora o manifesto dela registre o tamanho de 556.661.638 bytes. Convertida, ela gera 4.462.070 linhas, 11 delas lixo (uma linha cortada e 10 linhas de HTML): perde 3.422.737 linhas (43%) de 2019. Nada foi corrigido; o defeito está no bruto e na escolha da versão pelo nome.
+- **Download truncado passa pelo conversor.** Um download do arquivo de 2019 feito em 2026-11-02 veio incompleto: 314.966.191 bytes em vez de 556.661.638, terminando no meio de uma linha e seguido de uma página HTML de erro (`Server Error`). Convertido, esse arquivo gera 4.462.070 linhas, 11 delas lixo, contra 7.884.807 do arquivo completo. O conversor não detecta o caso, porque só confere o cabeçalho. O lake publicado usa o arquivo completo de 2019, com 7.884.807 linhas (conferido em 2026-11-10). Quem converter por conta própria deve comparar o tamanho do arquivo com o `size_bytes` do manifesto.
 - **C e V estão invertidos em relação ao dicionário.** O dicionário oficial define venda como título vendido ao investidor e compra como recompra pelo Tesouro. Nos dados de 2014, porém, a soma de `C` (R$ 4,993 bilhões) é praticamente a de `vendas-do-tesouro-direto` em 2014 (R$ 4,991 bilhões) e a de `V` (R$ 1,689 bilhão) é próxima à de `recompras-do-tesouro-direto` (R$ 1,703 bilhão). Na prática `C` é compra pelo investidor e `V` é venda pelo investidor (conferido em 2026-11-10).
 - **`D` e `R` não são compra nem venda.** São depósito e retirada de títulos do ambiente do Tesouro Direto; a retirada não é permitida desde maio de 2015, salvo correções por ordem da B3 (dicionário oficial). Não conte como captação.
 - **Tudo é texto.** O conversor não converte tipos: datas continuam `DD/MM/AAAA`, números usam vírgula decimal (`18168,832736`). Converta antes de ordenar ou somar; ordenar as datas como texto não segue o calendário (`DD/MM/AAAA`).

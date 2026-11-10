@@ -82,7 +82,7 @@ São dados individuais, mas o código é um identificador numérico sem nome nem
 - Uma linha por código de investidor e cadastro. Na amostra converti três arquivos (`ate-2017`, `2018` e `2026`): 10.176.339 linhas, 7.857.386 códigos distintos; 1.555.335 códigos aparecem em mais de uma linha, e 137.400 linhas são cópias exatas de outras (conferido em 2026-11-10, só nesses três arquivos).
 - O período do arquivo é o **ano de adesão**: cada arquivo contém só adesões do seu ano (`2018`: de 2018-01-01 a 2018-12-31; `2026`: de 2026-01-01 a 2026-09-30; `ate-2017`: de 1900-01-01 a 2017-12-31).
 - Cobertura nominal: a fonte anuncia dados desde jan/2002; a primeira adesão real vista foi em 2002-01-03. Há ainda adesões com data `1900` (821.380 das 3.261.185 linhas do arquivo `ate-2017`): a fonte atribui 1900 a pessoas jurídicas cadastradas (nota do dicionário oficial), mas não explica por que o volume é tão grande, e este documento não verifica a explicação.
-- Disponibilidade no bruto (Drive, 2026-11-10): `ate-2017` e 2018 a 2026; o arquivo de 2021 tem versão de maio de 2026, as demais de setembro e outubro de 2026.
+- Disponibilidade no bruto (2026-11-10): `ate-2017` e 2018 a 2026; o arquivo de 2021 tem versão de maio de 2026, as demais de setembro e outubro de 2026.
 
 ## Variáveis
 
