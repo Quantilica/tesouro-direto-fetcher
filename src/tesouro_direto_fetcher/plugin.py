@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from quantilica.cli.sdk import FetcherApp
+from quantilica.core.registry import FetcherInfo
 from quantilica.core.sync import FreshnessPolicy
 
 from tesouro_direto_fetcher.constants import (
@@ -106,6 +107,16 @@ def path_builder(
 fetcher = FetcherApp(
     name="tesouro-direto-fetcher",
     help="Dados do Tesouro Direto (preços, taxas, operações).",
+    info=FetcherInfo(
+        id="tesouro-direto",
+        nome="Tesouro Direto",
+        aliases=("td", "tddata", "tesouro_direto"),
+        orgao="Tesouro Nacional (STN/MF)",
+        licenca="Open Data Commons Open Database License (ODbL)",
+        homepage="https://www.tesourotransparente.gov.br/ckan/",
+        cadencia="daily",
+        dominio="fiscal",
+    ),
     groups_dict=GROUPS,
     aliases_dict=GROUP_ALIASES,
     list_datasets=list_datasets,
