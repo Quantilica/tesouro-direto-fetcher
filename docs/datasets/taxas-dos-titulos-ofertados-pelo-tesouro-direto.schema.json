@@ -1,0 +1,57 @@
+{
+  "fonte": "tesouro-direto",
+  "dataset": "taxas-dos-titulos-ofertados-pelo-tesouro-direto",
+  "gerado_em": "2026-11-10T13:57:34+00:00",
+  "particoes": [],
+  "colunas": [
+    {
+      "nome": "tipo_titulo",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "data_vencimento",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "data_base",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "taxa_compra_manha",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "taxa_venda_manha",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "pu_compra_manha",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "pu_venda_manha",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "pu_base_manha",
+      "tipos": [
+        "string"
+      ]
+    }
+  ],
+  "arquivos": 1
+}

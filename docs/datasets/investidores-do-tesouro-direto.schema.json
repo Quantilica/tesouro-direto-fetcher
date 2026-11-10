@@ -1,0 +1,77 @@
+{
+  "fonte": "tesouro-direto",
+  "dataset": "investidores-do-tesouro-direto",
+  "gerado_em": "2026-11-10T13:57:34+00:00",
+  "particoes": [
+    "periodo"
+  ],
+  "colunas": [
+    {
+      "nome": "codigo_do_investidor",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "data_de_adesao",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "estado_civil",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "genero",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "profissao",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "idade_do_investidor",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "uf_do_investidor",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "cidade_do_investidor",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "pais_do_investidor",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "situacao_da_conta",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "operou_12_meses",
+      "tipos": [
+        "string"
+      ]
+    }
+  ],
+  "arquivos": 3
+}

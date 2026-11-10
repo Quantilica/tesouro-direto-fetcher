@@ -155,6 +155,10 @@ uv sync --dev
 uv run pytest
 ```
 
+## Documentação dos dados
+
+O que cada dataset contém, de onde vem, como chega ao lake e os cuidados de uso: [docs/README.md](docs/README.md).
+
 ## Licença
 
 MIT — veja [LICENSE](LICENSE).

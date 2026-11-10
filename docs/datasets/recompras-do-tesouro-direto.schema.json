@@ -1,0 +1,39 @@
+{
+  "fonte": "tesouro-direto",
+  "dataset": "recompras-do-tesouro-direto",
+  "gerado_em": "2026-11-10T13:57:34+00:00",
+  "particoes": [],
+  "colunas": [
+    {
+      "nome": "tipo_titulo",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "vencimento_do_titulo",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "data_resgate",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "quantidade",
+      "tipos": [
+        "string"
+      ]
+    },
+    {
+      "nome": "valor",
+      "tipos": [
+        "string"
+      ]
+    }
+  ],
+  "arquivos": 1
+}
