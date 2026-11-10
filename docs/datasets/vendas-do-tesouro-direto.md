@@ -57,7 +57,7 @@ Vendas dos títulos do Tesouro Direto: o volume financeiro vendido a investidore
 ## Origem e coleta
 
 - O fetcher consulta o catálogo CKAN do Tesouro Transparente (conjunto `vendas-do-tesouro-direto`) e baixa o recurso CSV (`vendastesourodireto.csv`).
-- A fonte gera o arquivo todo dia, com a série inteira desde 2002 até dois dias antes da extração, a partir do Sistema Integrado da Dívida Pública (SID). No bruto: `vendas-do-tesouro-direto@AAAAMMDDTHHMMSS.csv`. O Drive tinha 27 versões em 2026-11-10; o lake converte a mais recente.
+- A fonte gera o arquivo todo dia, com a série inteira desde 2002 até dois dias antes da extração, a partir do Sistema Integrado da Dívida Pública (SID). No bruto: `vendas-do-tesouro-direto@AAAAMMDDTHHMMSS.csv`. O bruto tinha 27 versões em 2026-11-10; o lake converte a mais recente.
 
 ## Conteúdo
 

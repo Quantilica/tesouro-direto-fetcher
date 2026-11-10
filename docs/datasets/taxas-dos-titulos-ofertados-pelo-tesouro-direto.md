@@ -61,7 +61,7 @@ As taxas e os preços dos títulos ofertados pelo Tesouro Direto refletem o merc
 ## Origem e coleta
 
 - O fetcher consulta o catálogo CKAN do Tesouro Transparente (conjunto `taxas-dos-titulos-ofertados-pelo-tesouro-direto`) e baixa o recurso em CSV (`precotaxatesourodireto.csv`). O PDF de metadados não é baixado.
-- O arquivo traz a série inteira e é atualizado todo dia útil. No bruto: `taxas-dos-titulos-ofertados-pelo-tesouro-direto@AAAAMMDDTHHMMSS.csv`, com a data de modificação do recurso no catálogo. O Drive tinha 28 versões em 2026-11-10; o lake converte a mais recente.
+- O arquivo traz a série inteira e é atualizado todo dia útil. No bruto: `taxas-dos-titulos-ofertados-pelo-tesouro-direto@AAAAMMDDTHHMMSS.csv`, com a data de modificação do recurso no catálogo. O bruto tinha 28 versões em 2026-11-10; o lake converte a mais recente.
 
 ## Conteúdo
 

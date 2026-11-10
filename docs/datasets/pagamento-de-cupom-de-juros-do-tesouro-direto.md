@@ -59,7 +59,7 @@ Os três arquivos de resgates (cupom, recompras e vencimentos) vêm do mesmo con
 ## Origem e coleta
 
 - O fetcher consulta o catálogo CKAN do Tesouro Transparente (conjunto `resgates-do-tesouro-direto`), que reúne três recursos CSV: pagamento de cupom de juros, recompras e vencimentos. O bruto fica na pasta `resgates-do-tesouro-direto/` com os nomes `pagamento-de-cupom-de-juros-do-tesouro-direto@…`, `recompras-do-tesouro-direto@…` e `vencimentos-do-tesouro-direto@…`; o conversor separa os três pelo nome do arquivo e grava um dataset para cada.
-- A fonte atualiza os arquivos todo dia, com dados até dois dias antes da extração, a partir do SID. No bruto, o carimbo `@AAAAMMDDTHHMMSS` é a data de modificação do recurso; o lake converte a versão mais recente. O Drive tinha 9 versões do cupom e 27 de recompras e de vencimentos em 2026-11-10.
+- A fonte atualiza os arquivos todo dia, com dados até dois dias antes da extração, a partir do SID. No bruto, o carimbo `@AAAAMMDDTHHMMSS` é a data de modificação do recurso; o lake converte a versão mais recente. O bruto tinha 9 versões do cupom e 27 de recompras e de vencimentos em 2026-11-10.
 
 ## Conteúdo
 
