@@ -115,10 +115,18 @@ Valor anual de compras de títulos por investidores (`C`), por tipo de título, 
 ```python
 import polars as pl
 
-ops = pl.scan_parquet("lake/tesouro-direto/operacoes-do-tesouro-direto/**/*.parquet", hive_partitioning=True)
+ops = pl.scan_parquet(
+    "lake/tesouro-direto/operacoes-do-tesouro-direto/**/*.parquet",
+    hive_partitioning=True,
+)
 compras = (
     ops.filter(pl.col("tipo_da_operacao") == "C")
-    .with_columns(pl.col("valor_da_operacao").str.replace(",", ".").cast(pl.Float64).alias("valor_rs"))
+    .with_columns(
+        pl.col("valor_da_operacao")
+        .str.replace(",", ".")
+        .cast(pl.Float64)
+        .alias("valor_rs")
+    )
     .group_by("periodo", "tipo_titulo")
     .agg((pl.col("valor_rs").sum() / 1e9).alias("bi"))
     .sort("periodo", "bi", descending=[False, True])

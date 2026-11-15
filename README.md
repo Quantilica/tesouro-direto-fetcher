@@ -73,8 +73,8 @@ asyncio.run(
 from pathlib import Path
 from tesouro_direto_fetcher import reader
 
-df_precos      = reader.read_prices(Path("./dados/taxas-...@....csv"))
-df_estoque     = reader.read_stock(Path("./dados/estoque-...@....csv"))
+df_precos = reader.read_prices(Path("./dados/taxas-...@....csv"))
+df_estoque = reader.read_stock(Path("./dados/estoque-...@....csv"))
 df_investidores = reader.read_investors(Path("./dados/investidores-...@....csv"))
 ```
 

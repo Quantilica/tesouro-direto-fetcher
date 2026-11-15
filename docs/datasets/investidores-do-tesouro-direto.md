@@ -126,7 +126,10 @@ Número de investidores distintos que aderiram por ano nos arquivos convertidos 
 ```python
 import polars as pl
 
-inv = pl.scan_parquet("lake/tesouro-direto/investidores-do-tesouro-direto/**/*.parquet", hive_partitioning=True)
+inv = pl.scan_parquet(
+    "lake/tesouro-direto/investidores-do-tesouro-direto/**/*.parquet",
+    hive_partitioning=True,
+)
 por_periodo = (
     inv.group_by("periodo")
     .agg(pl.col("codigo_do_investidor").n_unique().alias("investidores"))

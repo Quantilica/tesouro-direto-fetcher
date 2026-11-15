@@ -105,14 +105,20 @@ Taxa de compra do Tesouro IPCA+ 2035 (vencimento 15/05/2035) ao longo do tempo, 
 ```python
 import polars as pl
 
-taxas = pl.scan_parquet("lake/tesouro-direto/taxas-dos-titulos-ofertados-pelo-tesouro-direto/*.parquet")
+taxas = pl.scan_parquet(
+    "lake/tesouro-direto/taxas-dos-titulos-ofertados-pelo-tesouro-direto/*.parquet"
+)
 ipca_2035 = (
     taxas.filter(
-        (pl.col("tipo_titulo") == "Tesouro IPCA+") & (pl.col("data_vencimento") == "15/05/2035")
+        (pl.col("tipo_titulo") == "Tesouro IPCA+")
+        & (pl.col("data_vencimento") == "15/05/2035")
     )
     .with_columns(
         pl.col("data_base").str.to_date("%d/%m/%Y").alias("dia"),
-        pl.col("taxa_compra_manha").str.replace(",", ".").cast(pl.Float64).alias("taxa"),
+        pl.col("taxa_compra_manha")
+        .str.replace(",", ".")
+        .cast(pl.Float64)
+        .alias("taxa"),
         pl.col("pu_compra_manha").str.replace(",", ".").cast(pl.Float64).alias("pu"),
     )
     .filter(pl.col("pu") > 0)

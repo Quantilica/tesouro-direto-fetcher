@@ -100,7 +100,9 @@ import polars as pl
 
 venc = pl.scan_parquet("lake/tesouro-direto/vencimentos-do-tesouro-direto/*.parquet")
 por_tipo = (
-    venc.with_columns(pl.col("valor").str.replace(",", ".").cast(pl.Float64).alias("valor_rs"))
+    venc.with_columns(
+        pl.col("valor").str.replace(",", ".").cast(pl.Float64).alias("valor_rs")
+    )
     .group_by("tipo_titulo")
     .agg((pl.col("valor_rs").sum() / 1e9).alias("bi"))
     .sort("bi", descending=True)

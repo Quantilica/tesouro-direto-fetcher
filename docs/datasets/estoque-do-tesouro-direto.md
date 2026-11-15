@@ -107,7 +107,9 @@ estoque = pl.scan_parquet("lake/tesouro-direto/estoque-do-tesouro-direto/*.parqu
 serie = (
     estoque.with_columns(
         pl.col("mes_estoque").str.to_date("%m/%Y", strict=False).alias("mes"),
-        (pl.col("valor_estoque").str.replace(",", ".").cast(pl.Float64) / 1e9).alias("bi"),
+        (pl.col("valor_estoque").str.replace(",", ".").cast(pl.Float64) / 1e9).alias(
+            "bi"
+        ),
     )
     .group_by("mes")
     .agg(pl.col("bi").sum())

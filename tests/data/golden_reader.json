@@ -1,0 +1,320 @@
+{
+ "prices": {
+  "schema": [
+   [
+    "reference_date",
+    "Date"
+   ],
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "buy_yield",
+    "Float64"
+   ],
+   [
+    "sell_yield",
+    "Float64"
+   ],
+   [
+    "buy_price",
+    "String"
+   ],
+   [
+    "sell_price",
+    "String"
+   ],
+   [
+    "base_price",
+    "String"
+   ]
+  ],
+  "rows": [
+   "{\"reference_date\": \"2020-01-02\", \"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"buy_yield\": 4.5, \"sell_yield\": 4.6, \"buy_price\": \"800,12\", \"sell_price\": \"799,5\", \"base_price\": \"800,1\"}",
+   "{\"reference_date\": \"2020-01-03\", \"bond_type\": \"Tesouro IPCA+\", \"maturity_date\": \"2035-05-15\", \"buy_yield\": 3.1, \"sell_yield\": 3.2, \"buy_price\": \"2.100,00\", \"sell_price\": \"2.099,0\", \"base_price\": \"2.100,5\"}",
+   "{\"reference_date\": \"2020-01-04\", \"bond_type\": \"Tesouro Selic\", \"maturity_date\": \"2025-03-01\", \"buy_yield\": 0.01, \"sell_yield\": 0.02, \"buy_price\": \"9.000,5\", \"sell_price\": \"9.001,0\", \"base_price\": \"9.000,7\"}"
+  ]
+ },
+ "prices-chunked": {
+  "schema": [
+   [
+    "reference_date",
+    "Date"
+   ],
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "buy_yield",
+    "Float64"
+   ],
+   [
+    "sell_yield",
+    "Float64"
+   ],
+   [
+    "buy_price",
+    "String"
+   ],
+   [
+    "sell_price",
+    "String"
+   ],
+   [
+    "base_price",
+    "String"
+   ]
+  ],
+  "rows": [
+   "{\"reference_date\": \"2020-01-02\", \"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"buy_yield\": 4.5, \"sell_yield\": 4.6, \"buy_price\": \"800,12\", \"sell_price\": \"799,5\", \"base_price\": \"800,1\"}",
+   "{\"reference_date\": \"2020-01-03\", \"bond_type\": \"Tesouro IPCA+\", \"maturity_date\": \"2035-05-15\", \"buy_yield\": 3.1, \"sell_yield\": 3.2, \"buy_price\": \"2.100,00\", \"sell_price\": \"2.099,0\", \"base_price\": \"2.100,5\"}",
+   "{\"reference_date\": \"2020-01-04\", \"bond_type\": \"Tesouro Selic\", \"maturity_date\": \"2025-03-01\", \"buy_yield\": 0.01, \"sell_yield\": 0.02, \"buy_price\": \"9.000,5\", \"sell_price\": \"9.001,0\", \"base_price\": \"9.000,7\"}"
+  ],
+  "n_batches": 3
+ },
+ "stock": {
+  "schema": [
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "stock_month",
+    "Date"
+   ],
+   [
+    "unit_price",
+    "Float64"
+   ],
+   [
+    "quantity",
+    "Float64"
+   ],
+   [
+    "stock_value",
+    "Float64"
+   ]
+  ],
+  "rows": [
+   "{\"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"stock_month\": \"2020-01-01\", \"unit_price\": 800.12, \"quantity\": 10.5, \"stock_value\": 8401.26}",
+   "{\"bond_type\": \"Tesouro IPCA+\", \"maturity_date\": \"2035-05-15\", \"stock_month\": \"2020-02-01\", \"unit_price\": 2100.0, \"quantity\": 3.25, \"stock_value\": 6825.0}"
+  ]
+ },
+ "stock-chunked": {
+  "schema": [
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "stock_month",
+    "Date"
+   ],
+   [
+    "unit_price",
+    "Float64"
+   ],
+   [
+    "quantity",
+    "Float64"
+   ],
+   [
+    "stock_value",
+    "Float64"
+   ]
+  ],
+  "rows": [
+   "{\"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"stock_month\": \"2020-01-01\", \"unit_price\": 800.12, \"quantity\": 10.5, \"stock_value\": 8401.26}",
+   "{\"bond_type\": \"Tesouro IPCA+\", \"maturity_date\": \"2035-05-15\", \"stock_month\": \"2020-02-01\", \"unit_price\": 2100.0, \"quantity\": 3.25, \"stock_value\": 6825.0}"
+  ],
+  "n_batches": 2
+ },
+ "investors": {
+  "schema": [
+   [
+    "investor_id",
+    "Int64"
+   ],
+   [
+    "join_date",
+    "Date"
+   ],
+   [
+    "marital_status",
+    "Categorical"
+   ],
+   [
+    "gender",
+    "Categorical"
+   ],
+   [
+    "profession",
+    "Categorical"
+   ],
+   [
+    "age",
+    "Int64"
+   ],
+   [
+    "state",
+    "Categorical"
+   ],
+   [
+    "city",
+    "Categorical"
+   ],
+   [
+    "country",
+    "Categorical"
+   ],
+   [
+    "account_status",
+    "Categorical"
+   ],
+   [
+    "traded_last_12_months",
+    "Categorical"
+   ]
+  ],
+  "rows": [
+   "{\"investor_id\": 1, \"join_date\": \"2015-02-01\", \"marital_status\": \"Solteiro\", \"gender\": \"M\", \"profession\": \"Engenheiro Civil Ação\", \"age\": 35, \"state\": \"SP\", \"city\": \"São Paulo\", \"country\": \"Brasil\", \"account_status\": \"A\", \"traded_last_12_months\": \"S\"}",
+   "{\"investor_id\": 2, \"join_date\": \"2018-08-15\", \"marital_status\": \"Casado\", \"gender\": \"F\", \"profession\": \"Professora\", \"age\": 41, \"state\": \"MG\", \"city\": \"Belo Horizonte\", \"country\": \"Brasil\", \"account_status\": \"D\", \"traded_last_12_months\": \"N\"}"
+  ]
+ },
+ "investors-chunked": {
+  "schema": [
+   [
+    "investor_id",
+    "Int64"
+   ],
+   [
+    "join_date",
+    "Date"
+   ],
+   [
+    "marital_status",
+    "Categorical"
+   ],
+   [
+    "gender",
+    "Categorical"
+   ],
+   [
+    "profession",
+    "Categorical"
+   ],
+   [
+    "age",
+    "Int64"
+   ],
+   [
+    "state",
+    "Categorical"
+   ],
+   [
+    "city",
+    "Categorical"
+   ],
+   [
+    "country",
+    "Categorical"
+   ],
+   [
+    "account_status",
+    "Categorical"
+   ],
+   [
+    "traded_last_12_months",
+    "Categorical"
+   ]
+  ],
+  "rows": [
+   "{\"investor_id\": 1, \"join_date\": \"2015-02-01\", \"marital_status\": \"Solteiro\", \"gender\": \"M\", \"profession\": \"Engenheiro Civil Ação\", \"age\": 35, \"state\": \"SP\", \"city\": \"São Paulo\", \"country\": \"Brasil\", \"account_status\": \"A\", \"traded_last_12_months\": \"S\"}",
+   "{\"investor_id\": 2, \"join_date\": \"2018-08-15\", \"marital_status\": \"Casado\", \"gender\": \"F\", \"profession\": \"Professora\", \"age\": 41, \"state\": \"MG\", \"city\": \"Belo Horizonte\", \"country\": \"Brasil\", \"account_status\": \"D\", \"traded_last_12_months\": \"N\"}"
+  ],
+  "n_batches": 2
+ },
+ "sales": {
+  "schema": [
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "sale_date",
+    "Date"
+   ],
+   [
+    "unit_price",
+    "Float64"
+   ],
+   [
+    "quantity",
+    "Float64"
+   ],
+   [
+    "value",
+    "Float64"
+   ]
+  ],
+  "rows": [
+   "{\"bond_type\": \"Tesouro IPCA+ com Juros Semestrais\", \"maturity_date\": \"2024-08-15\", \"sale_date\": \"2004-06-11\", \"unit_price\": 1087.18, \"quantity\": 8.2, \"value\": 8914.93}",
+   "{\"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"sale_date\": \"2004-06-12\", \"unit_price\": 800.0, \"quantity\": 1.0, \"value\": 800.0}"
+  ]
+ },
+ "sales-chunked": {
+  "schema": [
+   [
+    "bond_type",
+    "String"
+   ],
+   [
+    "maturity_date",
+    "Date"
+   ],
+   [
+    "sale_date",
+    "Date"
+   ],
+   [
+    "unit_price",
+    "Float64"
+   ],
+   [
+    "quantity",
+    "Float64"
+   ],
+   [
+    "value",
+    "Float64"
+   ]
+  ],
+  "rows": [
+   "{\"bond_type\": \"Tesouro IPCA+ com Juros Semestrais\", \"maturity_date\": \"2024-08-15\", \"sale_date\": \"2004-06-11\", \"unit_price\": 1087.18, \"quantity\": 8.2, \"value\": 8914.93}",
+   "{\"bond_type\": \"Tesouro Prefixado\", \"maturity_date\": \"2025-01-01\", \"sale_date\": \"2004-06-12\", \"unit_price\": 800.0, \"quantity\": 1.0, \"value\": 800.0}"
+  ],
+  "n_batches": 2
+ }
+}

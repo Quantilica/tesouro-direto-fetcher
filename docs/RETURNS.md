@@ -35,12 +35,11 @@ Calculates simple percentage returns for Polars Series.
 import polars as pl
 from tesouro_direto_fetcher.analytics import calculate_simple_return
 
-prices = pl.DataFrame({
-    'buy_price': [10000, 20000, 5000],
-    'sell_price': [11000, 18000, 5500]
-})
+prices = pl.DataFrame(
+    {"buy_price": [10000, 20000, 5000], "sell_price": [11000, 18000, 5500]}
+)
 
-returns = calculate_simple_return(prices['sell_price'], prices['buy_price'])
+returns = calculate_simple_return(prices["sell_price"], prices["buy_price"])
 # Returns: [10.0, -10.0, 10.0]
 ```
 
@@ -56,15 +55,14 @@ Calculates holding period in days for positions.
 ```python
 import polars as pl
 
-operations = pl.DataFrame({
-    'buy_date': pl.to_datetime(['2024-01-01', '2024-06-01']),
-    'sell_date': pl.to_datetime(['2024-07-01', '2024-12-01'])
-})
-
-days = calculate_holding_period_days(
-    operations['buy_date'],
-    operations['sell_date']
+operations = pl.DataFrame(
+    {
+        "buy_date": pl.to_datetime(["2024-01-01", "2024-06-01"]),
+        "sell_date": pl.to_datetime(["2024-07-01", "2024-12-01"]),
+    }
 )
+
+days = calculate_holding_period_days(operations["buy_date"], operations["sell_date"])
 # Returns: [182, 183]
 ```
 
@@ -72,11 +70,7 @@ days = calculate_holding_period_days(
 
 ```python
 calculate_annualized_return(
-    current_value,
-    initial_value,
-    holding_days,
-    min_days=30,
-    min_denominator=0.01
+    current_value, initial_value, holding_days, min_days=30, min_denominator=0.01
 )
 ```
 
@@ -88,16 +82,16 @@ Calculates Compound Annual Growth Rate (CAGR).
 ```python
 import polars as pl
 
-positions = pl.DataFrame({
-    'buy_value': [10000, 10000],
-    'current_value': [11000, 11000],
-    'holding_days': [365, 182]
-})
+positions = pl.DataFrame(
+    {
+        "buy_value": [10000, 10000],
+        "current_value": [11000, 11000],
+        "holding_days": [365, 182],
+    }
+)
 
 annualized = calculate_annualized_return(
-    positions['current_value'],
-    positions['buy_value'],
-    positions['holding_days']
+    positions["current_value"], positions["buy_value"], positions["holding_days"]
 )
 # Returns: [10.0, 21.0] (10% over 1 year, ~21% annualized for 6 months)
 ```
@@ -143,27 +137,31 @@ from tesouro_direto_fetcher import reader, analytics
 from tesouro_direto_fetcher.constants import Column as C
 
 # Read operations, prices, and coupons
-operations = reader.read_operations('operations.csv')
-prices = reader.read_prices('prices.csv')
-coupons = reader.read_interest_coupons('interest_coupons.csv')  # Optional
+operations = reader.read_operations("operations.csv")
+prices = reader.read_prices("prices.csv")
+coupons = reader.read_interest_coupons("interest_coupons.csv")  # Optional
 
 # Calculate returns with coupon support
 returns = analytics.calculate_operations_returns(operations, prices, coupons=coupons)
 
 # View closed positions with positive returns (Polars)
 profitable = returns.filter(
-    (returns['status'] == 'closed') & (returns['simple_return'] > 0)
-).sort('annualized_return', reverse=True)
+    (returns["status"] == "closed") & (returns["simple_return"] > 0)
+).sort("annualized_return", reverse=True)
 
-print(profitable.select([
-    C.BOND_TYPE.value,
-    C.OPERATION_DATE.value,
-    'sell_date',
-    'holding_days',
-    'total_coupons',
-    'simple_return',
-    'annualized_return'
-]))
+print(
+    profitable.select(
+        [
+            C.BOND_TYPE.value,
+            C.OPERATION_DATE.value,
+            "sell_date",
+            "holding_days",
+            "total_coupons",
+            "simple_return",
+            "annualized_return",
+        ]
+    )
+)
 ```
 
 **Example Output:**
@@ -178,11 +176,7 @@ print(profitable.select([
 
 ```python
 calculate_portfolio_monthly_returns(
-    operations,
-    prices,
-    start_date=None,
-    end_date=None,
-    coupons=None
+    operations, prices, start_date=None, end_date=None, coupons=None
 )
 ```
 
@@ -244,18 +238,20 @@ chart = (
         x=alt.X("month:T", title="Month"),
         y=alt.Y("cumulative_return:Q", title="Cumulative Return (%)"),
     )
-    .properties(title="Portfolio Cumulative Return (with Coupons)", width=720, height=320)
+    .properties(
+        title="Portfolio Cumulative Return (with Coupons)", width=720, height=320
+    )
 )
 chart.save("portfolio_cumulative_return.html")
 
 # Summary statistics
 print(f"Best month: {monthly['monthly_return'].max():.2f}%")
 print(f"Worst month: {monthly['monthly_return'].min():.2f}%")
-last_cum = monthly['cumulative_return'].to_numpy()[-1]
+last_cum = monthly["cumulative_return"].to_numpy()[-1]
 print(f"Total return: {last_cum:.2f}%")
 
 # Analyze coupon impact
-total_coupons = monthly.filter(monthly['net_cash_flow'] < 0)['net_cash_flow'].sum()
+total_coupons = monthly.filter(monthly["net_cash_flow"] < 0)["net_cash_flow"].sum()
 print(f"Total coupon distributions: {abs(total_coupons):.2f}")
 ```
 
@@ -308,43 +304,57 @@ coupons = reader.read_interest_coupons(data_dir / "interest_coupons.csv")  # Opt
 returns = analytics.calculate_operations_returns(operations, prices, coupons=coupons)
 
 # Group by investor
-investor_returns = returns.groupby('investor_id').agg({
-    'operation_value': 'sum',
-    'end_value': 'sum',
-    'total_coupons': 'sum',
-    'simple_return': 'mean',
-    'annualized_return': 'mean'
-}).reset_index()
+investor_returns = (
+    returns.groupby("investor_id")
+    .agg(
+        {
+            "operation_value": "sum",
+            "end_value": "sum",
+            "total_coupons": "sum",
+            "simple_return": "mean",
+            "annualized_return": "mean",
+        }
+    )
+    .reset_index()
+)
 
 # Find best performers
-top_investors = investor_returns.nlargest(10, 'annualized_return')
+top_investors = investor_returns.nlargest(10, "annualized_return")
 
 # Analyze coupon impact
-print(f"Total coupon income across all investors: {investor_returns['total_coupons'].sum():.2f}")
+print(
+    f"Total coupon income across all investors: {investor_returns['total_coupons'].sum():.2f}"
+)
 ```
 
 ### Pattern 2: Compare Bond Types
 
 ```python
 # Calculate returns by bond type
-by_type = returns.groupby('bond_type').agg({
-    'simple_return': ['mean', 'median', 'std'],
-    'annualized_return': ['mean', 'median'],
-    'total_coupons': ['sum', 'mean'],
-    'holding_days': 'mean'
-}).reset_index()
+by_type = (
+    returns.groupby("bond_type")
+    .agg(
+        {
+            "simple_return": ["mean", "median", "std"],
+            "annualized_return": ["mean", "median"],
+            "total_coupons": ["sum", "mean"],
+            "holding_days": "mean",
+        }
+    )
+    .reset_index()
+)
 
 # Flatten column names
-by_type.columns = ['_'.join(col).strip('_') for col in by_type.columns]
+by_type.columns = ["_".join(col).strip("_") for col in by_type.columns]
 
 # Compare coupon vs non-coupon bonds
-coupon_bonds = by_type[by_type['bond_type'].str.contains('Juros Semestrais')]
-non_coupon_bonds = by_type[~by_type['bond_type'].str.contains('Juros Semestrais')]
+coupon_bonds = by_type[by_type["bond_type"].str.contains("Juros Semestrais")]
+non_coupon_bonds = by_type[~by_type["bond_type"].str.contains("Juros Semestrais")]
 
 print("Coupon Bonds Performance:")
-print(coupon_bonds[['bond_type', 'annualized_return_mean', 'total_coupons_sum']])
+print(coupon_bonds[["bond_type", "annualized_return_mean", "total_coupons_sum"]])
 print("\nNon-Coupon Bonds Performance:")
-print(non_coupon_bonds[['bond_type', 'annualized_return_mean']])
+print(non_coupon_bonds[["bond_type", "annualized_return_mean"]])
 ```
 
 ### Pattern 3: Time-Series Analysis
@@ -352,24 +362,26 @@ print(non_coupon_bonds[['bond_type', 'annualized_return_mean']])
 ```python
 # Monthly portfolio returns with coupon support
 monthly = analytics.calculate_portfolio_monthly_returns(
-    operations,
-    prices,
-    coupons=coupons
+    operations, prices, coupons=coupons
 )
 
 # Rolling 12-month return
-monthly['rolling_12m'] = monthly['monthly_return'].rolling(12).sum()
+monthly["rolling_12m"] = monthly["monthly_return"].rolling(12).sum()
 
 # Volatility (standard deviation of monthly returns)
-volatility = monthly['monthly_return'].std()
+volatility = monthly["monthly_return"].std()
 print(f"Monthly volatility: {volatility:.2f}%")
 
 # Analyze seasonal coupon patterns
-monthly['coupon_distributions'] = monthly['net_cash_flow'].where(monthly['net_cash_flow'] < 0, 0).abs()
-monthly.groupby(monthly['month'].dt.month)['coupon_distributions'].mean().plot(kind='bar')
-plt.title('Average Monthly Coupon Distributions')
-plt.xlabel('Month')
-plt.ylabel('Average Coupon Amount')
+monthly["coupon_distributions"] = (
+    monthly["net_cash_flow"].where(monthly["net_cash_flow"] < 0, 0).abs()
+)
+monthly.groupby(monthly["month"].dt.month)["coupon_distributions"].mean().plot(
+    kind="bar"
+)
+plt.title("Average Monthly Coupon Distributions")
+plt.xlabel("Month")
+plt.ylabel("Average Coupon Amount")
 plt.show()
 ```
 
@@ -379,8 +391,8 @@ plt.show()
 # Calculate Sharpe-like ratio (simplified)
 monthly = analytics.calculate_portfolio_monthly_returns(operations, prices)
 
-avg_return = monthly['monthly_return'].mean()
-std_return = monthly['monthly_return'].std()
+avg_return = monthly["monthly_return"].mean()
+std_return = monthly["monthly_return"].std()
 
 if std_return > 0:
     risk_adj_return = avg_return / std_return

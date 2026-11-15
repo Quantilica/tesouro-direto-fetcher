@@ -99,7 +99,9 @@ Valor pago em cupons por ano (R$ milhões):
 ```python
 import polars as pl
 
-cupons = pl.scan_parquet("lake/tesouro-direto/pagamento-de-cupom-de-juros-do-tesouro-direto/*.parquet")
+cupons = pl.scan_parquet(
+    "lake/tesouro-direto/pagamento-de-cupom-de-juros-do-tesouro-direto/*.parquet"
+)
 por_ano = (
     cupons.with_columns(
         pl.col("data_resgate").str.to_date("%d/%m/%Y").dt.year().alias("ano"),
