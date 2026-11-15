@@ -14,6 +14,7 @@ from pathlib import Path
 
 try:
     import polars as pl
+    from quantilica.analytics.reader import read_csv_resilient
 except ImportError as exc:
     raise ImportError(
         "tesouro_direto_fetcher.reader requer o extra 'analysis': "
@@ -102,7 +103,7 @@ def _read_and_process_csv(
 
     if chunksize is None:
         # Full read
-        data = pl.read_csv(
+        data = read_csv_resilient(
             filepath,
             separator=";",
             decimal_comma=True,
@@ -110,10 +111,11 @@ def _read_and_process_csv(
         return _process(data)
     else:
         # Batched reading — use `scan_csv().collect_batches()` to avoid deprecated API
-        lf = pl.scan_csv(
+        lf = read_csv_resilient(
             filepath,
             separator=";",
             decimal_comma=True,
+            lazy=True,
         )
         batches = lf.collect_batches(chunk_size=chunksize)
 

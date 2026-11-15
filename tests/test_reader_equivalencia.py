@@ -83,6 +83,17 @@ class TestReaderEquivalencia(unittest.TestCase):
             got = snapshot(Path(tmp))
         self.assertEqual(got, json.loads(GOLDEN.read_text(encoding="utf-8")))
 
+    def test_latin1_file_is_read_instead_of_failing(self):
+        import tempfile
+
+        func, text = _CASES["investors"]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "investors-latin1.csv"
+            path.write_bytes(text.encode("latin-1", errors="replace"))
+            df = func(path)
+        self.assertEqual(df["city"][0], "São Paulo")
+        self.assertEqual(df["profession"][0], "Engenheiro Civil Ação")
+
 
 if __name__ == "__main__":  # pragma: no cover - gera o golden com o leitor atual
     import sys
